@@ -14,7 +14,7 @@ class Piece
 {
 private:
 	wstring unicode;
-	int color;
+	int color; // 0 = white		1 = black
 	int code;
 
 public:
