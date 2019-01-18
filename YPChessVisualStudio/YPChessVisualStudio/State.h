@@ -46,6 +46,6 @@ public:
 
 	void setSquare(int x, int y, Piece* piece);
 
-	int getPiece(int x, int y);
+	Piece getPiece(int x, int y);
 };
 
