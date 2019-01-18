@@ -1,6 +1,7 @@
 #pragma once
 
 #include "State.h"
+#include "Piece.h"
 #include <windows.h>
 #include <iostream>
 #include <string>

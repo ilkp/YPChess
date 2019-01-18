@@ -1,4 +1,5 @@
 #include "UI.h"
+#include <string>
 
 
 UI::UI(State* state)
@@ -16,10 +17,12 @@ void UI::drawBoard()
 {
 	int pieceCode;
 	int squareColor = 0;
+	string output = "";
+
 
 	for (int i = 8; i > 0; i--)
 	{
-		cout << j;
+		output.append(to_string(i));
 		for (int j = 8; j > 0; j--)
 		{
 			if (squareColor == 0)
@@ -35,7 +38,10 @@ void UI::drawBoard()
 			cout << " ";
 			switch (pieceCode)
 			{
-
+			case 0:
+				cout << " ";
+			case WK:
+				cout 
 			}
 		}
 	}
