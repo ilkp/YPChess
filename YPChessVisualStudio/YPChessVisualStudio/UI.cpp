@@ -1,13 +1,13 @@
 #include "UI.h"
 #include <string>
+#include <io.h>
+#include <fcntl.h>
 
-
-UI::UI(State* state)
+UI::UI(State* state, HANDLE outputHandle)
 {
 	UI::state = state;
-	UI::outputH = GetStdHandle(STD_OUTPUT_HANDLE);
+	UI::hConsole = outputHandle;
 }
-
 
 UI::~UI()
 {
@@ -15,34 +15,33 @@ UI::~UI()
 
 void UI::drawBoard()
 {
-	int pieceCode;
-	int squareColor = 0;
-	string output = "";
-
-
-	for (int i = 8; i > 0; i--)
+	_setmode(_fileno(stdout), _O_U16TEXT);
+	for (int y = 0; y < 8; y++)
 	{
-		output.append(to_string(i));
-		for (int j = 8; j > 0; j--)
+		wcout << 8 - y;
+		for (int x = 0; x < 8; x++)
 		{
-			if (squareColor == 0)
+			if ((y + x) % 2 == 0)
 			{
-				SetConsoleTextAttribute(outputH, BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
-				squareColor = 1;
+				SetConsoleTextAttribute(hConsole, BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
 			}
 			else {
-				SetConsoleTextAttribute(outputH, BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
-				squareColor = 0;
+				SetConsoleTextAttribute(hConsole, BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
 			}
-			pieceCode = state[i][j].getPiece(i, j).getCode();
-			cout << " ";
-			switch (pieceCode)
+			if (state->getSquare(y, x) != 0)
 			{
-			case 0:
-				cout << " ";
-			case WK:
-				cout 
+				wcout << " " << state->getSquare(y, x)->getUnicode() << " ";
+			}
+			else {
+				wcout << "   ";
 			}
 		}
+		wcout << "\n";
 	}
+	wcout << "  a  b  c  d  e  f  g  h" << endl;
+}
+
+Move * UI::giveOpponentsMove()
+{
+	return nullptr;
 }

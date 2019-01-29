@@ -1,76 +1,125 @@
 #include "State.h"
+#include "Move.h"
 #include <iostream>
 #include <string>
+
 using namespace std;
 
+/*
+WKING		L'\u2654'
+WQUEEN		L'\u2655'
+WROOK		L'\u2656'
+WBISHOP		L'\u2657'
+WKNIGHT		L'\u2658'
+WPAWN		L'\u2659'
 
+BKING		L'\u265A'
+BQUEEN		L'\u265B'
+BROOK		L'\u265C'
+BBISHOP		L'\u265D'
+BKNIGHT		L'\u265E'
+BPAWN		L'\u265F'
+*/
 
 State::State()
 {
-	
+	board[0][0] = new Piece(L'\u265C', 1, BROOK);
+	board[0][1] = new Piece(L'\u265E', 1, BKNIGHT);
+	board[0][2] = new Piece(L'\u265D', 1, BBISHOP);
+	board[0][3] = new Piece(L'\u265B', 1, BQUEEN);
+	board[0][4] = new Piece(L'\u265A', 1, BKING);
+	board[0][5] = new Piece(L'\u265D', 1, BBISHOP);
+	board[0][6] = new Piece(L'\u265E', 1, BKNIGHT);
+	board[0][7] = new Piece(L'\u265C', 1, BROOK);
 
-	board[0][0] = new Piece(L"\u265C", 1, BT);
-	board[0][1] = new Piece(L"\u265E", 1, Bk);
-	board[0][2] = new Piece(L"\u265D", 1, BB);
-	board[0][3] = new Piece(L"\u265B", 1, BQ);
-	board[0][4] = new Piece(L"\u265A", 1, BK);
-	board[0][5] = new Piece(L"\u265D", 1, BB);
-	board[0][6] = new Piece(L"\u265E", 1, Bk);
-	board[0][7] = new Piece(L"\u265C", 1, BT);
+	board[7][0] = new Piece(L'\u2656', 0, WROOK);
+	board[7][1] = new Piece(L'\u2658', 0, WKNIGHT);
+	board[7][2] = new Piece(L'\u2657', 0, WBISHOP);
+	board[7][3] = new Piece(L'\u2655', 0, WQUEEN);
+	board[7][4] = new Piece(L'\u2654', 0, WKING);
+	board[7][5] = new Piece(L'\u2657', 0, WBISHOP);
+	board[7][6] = new Piece(L'\u2658', 0, WKNIGHT);
+	board[7][7] = new Piece(L'\u2656', 0, WROOK);
 
 	for (int i = 0; i < 8; i++)
 	{
-		board[1][i] = new Piece(L"\u265F", 1, BS);
-		board[6][i] = new Piece(L"\u2659", 0, WS);
+		board[1][i] = new Piece(L'\u265F', 1, BPAWN);
+		board[6][i] = new Piece(L'\u2659', 0, WPAWN);
 	}
 
-	board[7][0] = new Piece(L"\u2656", 0, WT);
-	board[7][1] = new Piece(L"\u2658", 0, Wk);
-	board[7][2] = new Piece(L"\u2657", 0, WB);
-	board[7][3] = new Piece(L"\u2655", 0, WQ);
-	board[7][4] = new Piece(L"\u2654", 0, WK);
-	board[7][5] = new Piece(L"\u2657", 0, WB);
-	board[7][6] = new Piece(L"\u2658", 0, Wk);
-	board[7][7] = new Piece(L"\u2656", 0, WT);
-
-	
-
+	for (int i = 2; i < 6; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			board[i][j] = 0;
+		}
+	}
 }
 
 
 
 State::~State()
 {
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if (board[i][j] != 0)
+			{
+				delete(board[i][j]);
+			}
+		}
+	}
 }
 
-Piece State::getBoard()
+void State::setSquare(int y, int x, Piece* piece)
 {
-	return Piece();
+	board[y][x] = piece;
 }
 
-void State::setBoard(Piece * board)
+void State::updateState(Move* move)
+{
+
+}
+
+int State::getTurn()
+{
+	return turn;
+}
+
+void State::setTurn(int color)
 {
 }
 
-void State::setSquare(int x, int y, Piece* piece)
+bool State::getWhiteCastleLeft()
 {
-	board[x][y] = piece;
+	return false;
 }
 
-Piece State::getPiece(int x, int y)
+bool State::getWhiteCastleRight()
 {
-	if (board[x][y] == NULL)
+	return false;
+}
+
+bool State::getBblackCastleLeft()
+{
+	return false;
+}
+
+bool State::getBlackCastleRight()
+{
+	return false;
+}
+
+Piece* State::getSquare(int y, int x)
+{
+	if (board[y][x] == NULL)
 	{
 		return NULL;
 	}
 	else;
 	{
-		return board[x][y];
+		return board[y][x];
 	}
 	
 }
-
-Piece*[] operator[](int number)
-[
-	return board[number];
-]

@@ -4,7 +4,7 @@
 
 
 
-Piece::Piece(wstring unicode, int color, int code)
+Piece::Piece(wchar_t unicode, int color, int code)
 {
 	Piece::unicode = unicode;
 	Piece::color = color;
@@ -25,12 +25,12 @@ int Piece::getCode()
 	return code;
 }
 
-void Piece::setUnicode(wstring unicode)
+void Piece::setUnicode(wchar_t unicode)
 {
 	Piece::unicode = unicode;
 }
 
-wstring Piece::getUnicode()
+wchar_t Piece::getUnicode()
 {
 	return unicode;
 }

@@ -4,48 +4,26 @@
 class State
 {
 private:
-
-	Piece* VK;
-	Piece* VD;
-	Piece* VT;
-	Piece* VL;
-	Piece* VR;
-	Piece* VS;
-	Piece* MK;
-	Piece* MD;
-	Piece* MT;
-	Piece* ML;
-	Piece* MR;
-	Piece* MS;
-
-	/*
-	VK, L"\u2654	
-	VD, L"\u2655	
-	VT, L"\u2656	 
-	VL, L"\u2657	
-	VR, L"\u2658	
-	VS, L"\u2659"
-	MK, L"\u265A	
-	MD, L"\u265B
-	MT, L"\u265C”
-	ML, L"\u265D"
-	MR, L"\u265E"
-	MS, L"\u265F"
-	*/
-
 	Piece* board[8][8];
-
+	int turn;
+	bool whiteCastleLeft;
+	bool whiteCastleRighT;
+	bool blackCastleLeft;
+	bool blackCastleRighT;
 
 public:
 	State();
 	~State();
 
-	Piece getBoard();
+	Piece* getSquare(int y, int x);
+	void setSquare(int y, int x, Piece* piece);
+	void updateState(Move* move);
+	int getTurn();
+	void setTurn(int color);
+	bool getWhiteCastleLeft();
+	bool getWhiteCastleRight();
+	bool getBblackCastleLeft();
+	bool getBlackCastleRight();
 
-	void setBoard(Piece* board);
-
-	void setSquare(int x, int y, Piece* piece);
-
-	Piece getPiece(int x, int y);
 };
 

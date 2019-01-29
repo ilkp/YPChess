@@ -19,12 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Move.h" />
     <ClInclude Include="Piece.h" />
+    <ClInclude Include="Square.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Move.cpp" />
     <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Square.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
