@@ -12,6 +12,12 @@ int main()
 	State* state = new State();
 	UI* ui = new UI(state, GetStdHandle(STD_OUTPUT_HANDLE));
 
+	while (true)
+	{
+		ui->drawBoard();
+		state->updateState(ui->giveOpponentsMove());
+		state->setTurn((state->getTurn() + 1) % 2);
+	}
 	ui->drawBoard();
 	
 	int end;

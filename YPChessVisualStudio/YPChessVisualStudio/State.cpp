@@ -79,7 +79,42 @@ void State::setSquare(int y, int x, Piece* piece)
 
 void State::updateState(Move* move)
 {
-
+	if (move->isLongCastle())
+	{
+		if (turn == 0)
+		{
+			board[7][2] = board[7][4];
+			board[7][4] = 0;
+			board[7][3] = board[7][0];
+			board[7][0] = 0;
+		}
+		else {
+			board[0][2] = board[0][4];
+			board[0][4] = 0;
+			board[0][3] = board[0][0];
+			board[0][0] = 0;
+		}
+	}
+	else if (move->isShortCastle())
+	{
+		if (turn == 0)
+		{
+			board[7][6] = board[7][4];
+			board[7][4] = 0;
+			board[7][5] = board[7][7];
+			board[7][7] = 0;
+		}
+		else {
+			board[0][6] = board[0][4];
+			board[0][4] = 0;
+			board[0][5] = board[0][7];
+			board[0][7] = 0;
+		}
+	}
+	else {
+		board[move->getEndY()][move->getEndX()] = board[move->getStartY()][move->getStartX()];
+		board[move->getStartY()][move->getStartX()] = 0;
+	}
 }
 
 int State::getTurn()
@@ -89,6 +124,8 @@ int State::getTurn()
 
 void State::setTurn(int color)
 {
+	// 0 = white, 1 = black
+	State::turn = color;
 }
 
 bool State::getWhiteCastleLeft()

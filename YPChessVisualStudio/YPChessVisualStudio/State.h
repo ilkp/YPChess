@@ -1,11 +1,12 @@
 #pragma once
 #include "Piece.h"
+#include "Move.h"
 
 class State
 {
 private:
 	Piece* board[8][8];
-	int turn;
+	int turn = 0; // 0 = white	1 = black
 	bool whiteCastleLeft;
 	bool whiteCastleRighT;
 	bool blackCastleLeft;

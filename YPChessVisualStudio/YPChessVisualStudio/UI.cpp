@@ -1,7 +1,12 @@
 #include "UI.h"
+#include "Square.h"
 #include <string>
 #include <io.h>
 #include <fcntl.h>
+#include <string>
+
+#define BOARD_Y(x) (7 - (x - 49)) // 7- turns printed board number into internal board number, 4-8 is offset from ascii number
+#define BOARD_X(x) (x - 97) // -97 is offset from ascii character
 
 UI::UI(State* state, HANDLE outputHandle)
 {
@@ -41,7 +46,18 @@ void UI::drawBoard()
 	wcout << "  a  b  c  d  e  f  g  h" << endl;
 }
 
-Move * UI::giveOpponentsMove()
+Move* UI::giveOpponentsMove()
 {
-	return nullptr;
+	string input;
+	std::cin >> input;
+	if (input[0] == 'O')
+	{
+		if (input.length() > 3)
+		{
+			return new Move(0, 1);
+		}
+		return new Move(1, 0);
+	}
+	int ystart = BOARD_Y(input[2]);
+	return new Move(BOARD_Y(input[2]), BOARD_X(input[1]), BOARD_Y(input[5]), BOARD_X(input[4]));
 }
