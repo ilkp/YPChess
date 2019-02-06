@@ -1,8 +1,10 @@
 #pragma once
 
 #include <string>
+#include <list>
 
-using namespace std;
+#include "State.h"
+#include "Move.h"
 
 enum
 {
@@ -26,5 +28,6 @@ public:
 	wchar_t getUnicode();
 	void setColor(int color);
 	int getColor();
+	virtual void genMoves(std::list<Move>& moves, const int yCoord, const int xCoord, State* board, int color) = 0;
 };
 
