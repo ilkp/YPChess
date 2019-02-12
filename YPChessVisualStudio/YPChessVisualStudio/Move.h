@@ -19,12 +19,12 @@ public:
 	//Move(Square* start, Square* end);
 	Move(bool shortCastle, bool longCastle);
 	~Move();
-	//Square* getStartSquare();
-	//Square* getEndSquare();
-	int getStartY();
-	int getStartX();
-	int getEndY();
-	int getEndX();
+	Square* getStartSquare();
+	Square* getEndSquare();
+	//int getStartY();
+	//int getStartX();
+	//int getEndY();
+	//int getEndX();
 	bool isShortCastle();
 	bool isLongCastle();
 };

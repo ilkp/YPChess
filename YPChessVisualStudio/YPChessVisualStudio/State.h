@@ -25,6 +25,7 @@ public:
 	bool getWhiteCastleRight();
 	bool getBblackCastleLeft();
 	bool getBlackCastleRight();
+	Piece* getPiece(int y, int x);
 
 };
 

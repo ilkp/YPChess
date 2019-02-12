@@ -28,6 +28,6 @@ public:
 	wchar_t getUnicode();
 	void setColor(int color);
 	int getColor();
-	virtual void genMoves(std::list<Move>& moves, const int yCoord, const int xCoord, State* board, int color) = 0;
+	virtual void genMoves(std::list<Move>& moves, Square* square, State* board, int color) = 0;
 };
 

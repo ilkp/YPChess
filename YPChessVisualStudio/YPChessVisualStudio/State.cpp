@@ -112,8 +112,9 @@ void State::updateState(Move* move)
 		}
 	}
 	else {
-		board[move->getEndY()][move->getEndX()] = board[move->getStartY()][move->getStartX()];
-		board[move->getStartY()][move->getStartX()] = 0;
+		board[move->getEndSquare()->getRow()][move->getEndSquare()->getColumn()]
+			= board[move->getStartSquare()->getRow()][move->getStartSquare()->getColumn()];
+		board[move->getStartSquare()->getRow()][move->getStartSquare()->getColumn()] = 0;
 	}
 }
 
@@ -146,6 +147,11 @@ bool State::getBblackCastleLeft()
 bool State::getBlackCastleRight()
 {
 	return false;
+}
+
+Piece* State::getPiece(int y, int x)
+{
+	return board[y][x];
 }
 
 Piece* State::getSquare(int y, int x)

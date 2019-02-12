@@ -30,7 +30,6 @@ Move::~Move()
 {
 }
 
-/*
 Square* Move::getStartSquare()
 {
 	return Move::startSquare;
@@ -40,8 +39,8 @@ Square* Move::getEndSquare()
 {
 	return Move::endSquare;
 }
-*/
 
+/*
 int Move::getStartY()
 {
 	return startY;
@@ -61,6 +60,7 @@ int Move::getEndX()
 {
 	return endX;
 }
+*/
 
 bool Move::isShortCastle()
 {
