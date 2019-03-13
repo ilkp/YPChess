@@ -12,13 +12,12 @@ using namespace std;
 class UI
 {
 private:
-	State* state;
 	HANDLE hConsole;
 
 public:
 	UI(State* state, HANDLE outputHandle);
 	~UI();
-	void drawBoard();
-	Move* giveOpponentsMove();
+	void drawBoard(State* state);
+	Move* takePlayersMove();
 };
 

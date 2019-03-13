@@ -1,22 +1,14 @@
 #include "Move.h"
 
+Move::Move()
+{
 
-/*
+}
+
 Move::Move(Square* start, Square* end)
 {
 	startSquare = start;
 	endSquare = end;
-}
-*/
-
-Move::Move(int startY, int startX, int endY, int endX)
-{
-	Move::startY = startY;
-	Move::startX = startX;
-	Move::endY = endY;
-	Move::endX = endX;
-	Move::shortCastle = false;
-	Move::longCastle = false;
 }
 
 Move::Move(bool shortCastle, bool longCastle)
@@ -32,42 +24,20 @@ Move::~Move()
 
 Square* Move::getStartSquare()
 {
-	return Move::startSquare;
+	return startSquare;
 }
 
 Square* Move::getEndSquare()
 {
-	return Move::endSquare;
+	return endSquare;
 }
-
-/*
-int Move::getStartY()
-{
-	return startY;
-}
-
-int Move::getStartX()
-{
-	return startX;
-}
-
-int Move::getEndY()
-{
-	return endY;
-}
-
-int Move::getEndX()
-{
-	return endX;
-}
-*/
 
 bool Move::isShortCastle()
 {
-	return Move::shortCastle;
+	return shortCastle;
 }
 
 bool Move::isLongCastle()
 {
-	return Move::longCastle;
+	return longCastle;
 }

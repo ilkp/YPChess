@@ -1,32 +1,28 @@
 #include "Knight.h"
+#include "State.h"
 
-
-
-Knight::Knight(wchar_t unicode, int color, int code) : Piece(unicode, color, code)
-{
-}
 
 
 Knight::~Knight()
 {
 }
 
-void Knight::genMoves(std::list<Move>& moves, Square * square, State * board, int color)
+void Knight::genMoves(std::list<Move*>& moves, Square * square, State * board, int color)
 {
-	int yStart = square->getColumn();
-	int xStart = square->getRow();
-	for (int y = yStart - 2; y < yStart + 3; y++)
+	int yStart = square->getRow();
+	int xStart = square->getColumn();
+	int moveTableY, moveTableX;
+
+	for (int i = 0; i < 8; i++)
 	{
-		for (int x = xStart - 2; y < xStart + 3; x++)
+		moveTableY = moveTable[i][0];
+		moveTableX = moveTable[i][1];
+		if (yStart + moveTableY >= 0 && yStart + moveTableY <= 7
+			&& xStart + moveTableX >= 0 && xStart + moveTableX <= 7)
 		{
-			if (y >= 0 && y <= 7 && x >= 0 && x <= 7
-				&& (y + x) % 2 != 0
-				&& y != 0 && x != 0)
+			if (board->getPiece(yStart + moveTableY, xStart + moveTableX) == nullptr || board->getPiece(yStart + moveTableY, xStart + moveTableX)->getColor() != color)
 			{
-				if (board->getPiece(yStart, xStart) == nullptr || board->getPiece(yStart, xStart)->getColor() != color)
-				{
-					moves.push_back(Move(yStart, xStart, y, x));
-				}
+				moves.push_back(new Move(square, new Square(yStart + moveTableY, xStart + moveTableX)));
 			}
 		}
 	}

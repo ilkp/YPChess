@@ -3,14 +3,10 @@
 #include <string>
 #include <list>
 
-#include "State.h"
 #include "Move.h"
 
-enum
-{
-	WKING, WQUEEN, WBISHOP, WKNIGHT, WROOK, WPAWN,
-	BKING, BQUEEN, BBISHOP, BKNIGHT, BROOK, BPAWN
-};
+
+class State;
 
 class Piece
 {
@@ -20,7 +16,14 @@ private:
 	int code;
 
 public:
+	enum code
+	{
+		KING, QUEEN, BISHOP, KNIGHT, ROOK, PAWN
+	};
+
+	Piece() {};
 	Piece(wchar_t unicode, int color, int code);
+	Piece(const Piece& other);
 	~Piece();
 	void setCode(int code);
 	int getCode();
@@ -28,6 +31,7 @@ public:
 	wchar_t getUnicode();
 	void setColor(int color);
 	int getColor();
-	virtual void genMoves(std::list<Move>& moves, Square* square, State* board, int color) = 0;
+	virtual void genMoves(std::list<Move*>& moves, Square* square, State* board, int color) = 0;
+
 };
 

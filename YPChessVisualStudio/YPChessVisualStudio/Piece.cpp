@@ -11,6 +11,13 @@ Piece::Piece(wchar_t unicode, int color, int code)
 	Piece::code = code;
 }
 
+Piece::Piece(const Piece & other)
+{
+	this->unicode = other.unicode;
+	this->color = other.color;
+	this->code = other.code;
+}
+
 Piece::~Piece()
 {
 }
