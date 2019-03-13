@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include "State.h"
 #include "Move.h"
 #include "Bishop.h"
@@ -200,10 +201,10 @@ void State::giveLegalMoves(std::list<Move*>& moves)
 	for (auto it = moves.begin(); it != moves.end(); it++)
 	{
 		newState = *this;
-		newState.updateState((*it));
-		kingsSquare = findKing(newState.turn);
+		newState.playMove((*it));
+		kingsSquare = findKing(&newState, newState.turn);
 		newState.setTurn((newState.turn + 1) % 2);
-		bool kingThreatened = squareThreatened(kingsSquare, newState.turn);
+		bool kingThreatened = squareThreatened(&newState, kingsSquare, newState.turn);
 		if (!kingThreatened)
 		{
 			newMoves.push_back((*it));
@@ -224,13 +225,13 @@ Piece* State::getPiece(int y, int x)
 	}
 }
 
-Square State::findKing(int color)
+Square State::findKing(State* obsState, int color)
 {
 	for (int y = 0; y < 8; y++)
 	{
 		for (int x = 0; x < 8; x++)
 		{
-			Piece* piece = board[y][x];
+			Piece* piece = obsState->getPiece(y, x);
 			if (piece != nullptr && piece->getCode() == Piece::KING && piece->getColor() == color)
 			{
 				return Square(y, x);
@@ -296,7 +297,7 @@ bool State::squareThreatened(Square square, std::list<Move*>& moves)
 	return false;
 }
 
-bool State::squareThreatened(Square square, int opponent)
+bool State::squareThreatened(State* state, Square square, int opponent)
 {
 	std::list<Move*> opponentsMoves;
 	//Väreittäin käydään läpi kaikki ruudut ja niissä olevan nappulan siirrot kerätään vastustajan siirtolistaan
@@ -310,16 +311,15 @@ bool State::squareThreatened(Square square, int opponent)
 		}
 	}
 	// Käydään vastustajaSiirtoLista läpi ja jos sieltä löytyy tarkasteltava ruutu niin tiedetään sen olevan uhattu
-	bool squareOk = true;
 	for (auto move : opponentsMoves)
 	{
 		if (move->isLongCastle())
 		{
-			State tempState = *this;
+			State tempState = *state;
 			std::list<Move*> rookMoves;
 			tempState.playMove(move);
-			Piece* rook = tempState.board[opponent == 0 ? 0 : 7][3];
-			rook->genMoves(rookMoves, &Square(opponent == 0 ? 0 : 7, 3), &tempState, opponent);
+			Piece* rook = tempState.board[opponent == 0 ? 7 : 0][3];
+			rook->genMoves(rookMoves, &Square(opponent == 0 ? 7 : 0, 3), &tempState, opponent);
 			for (Move* move : rookMoves)
 			{
 				if (move->getEndSquare()->getColumn() == square.getColumn() && move->getEndSquare()->getRow() == square.getRow())
@@ -330,11 +330,11 @@ bool State::squareThreatened(Square square, int opponent)
 		}
 		else if (move->isShortCastle())
 		{
-			State tempState = *this;
+			State tempState = *state;
 			std::list<Move*> rookMoves;
 			tempState.playMove(move);
-			Piece* rook = tempState.board[opponent == 0 ? 0 : 7][5];
-			rook->genMoves(rookMoves, &Square(opponent == 0 ? 0 : 7, 5), &tempState, opponent);
+			Piece* rook = tempState.board[opponent == 0 ? 7 : 0][5];
+			rook->genMoves(rookMoves, &Square(opponent == 0 ? 7 : 0, 5), &tempState, opponent);
 			for (Move* move : rookMoves)
 			{
 				if (move->getEndSquare()->getColumn() == square.getColumn() && move->getEndSquare()->getRow() == square.getRow())
@@ -381,6 +381,7 @@ double State::evaluate()
 					pieceValue = 9.0;
 					break;
 				default:
+					pieceValue = 0.0;
 					break;
 				}
 				if (board[y][x]->getColor() == 0)
@@ -440,6 +441,10 @@ Minimax State::minimax(int depth)
 			minimaxValue.bestMove = *s;
 		}
 	}
+	for (Move* move : moves)
+	{
+		delete(move);
+	}
 	return minimaxValue;
 }
 
@@ -462,7 +467,7 @@ double State::endState()
 		}
 	}
 
-	if (squareThreatened(Square(kx, ky), turn == 0 ? 1 : 0))
+	if (squareThreatened(this, Square(kx, ky), turn == 0 ? 1 : 0))
 	{
 		return 0; // tasapeli (patti)
 	}
@@ -505,6 +510,10 @@ void State::playMove(Move* move)
 		}
 		else {
 			doubleStepOnColumn = -1;
+		}
+		if (piece->getCode() == Piece::PAWN && move->getEndSquare()->getRow() == (turn == 0 ? 0 : 7))
+		{
+			piece->setCode(Piece::QUEEN);
 		}
 		if (piece->getCode() == Piece::KING)
 		{
@@ -556,8 +565,47 @@ void State::playMove(Move* move)
 	updateState(move);
 }
 
+// used to check if players inputted move is legal
 bool State::moveIsLegal(Move* move)
 {
+	if (move->isLongCastle())
+	{
+		if (turn == 0 ? whiteKingMoved : blackKingMoved)
+		{
+			return false;
+		}
+		if (turn == 0 ? whiteQRMoved : blackQRMoved)
+		{
+			return false;
+		}
+		int row = turn == 0 ? 7 : 0;
+		if (board[row][1] != nullptr || board[row][2] != nullptr || board[row][3] != nullptr)
+		{
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	if (move->isShortCastle())
+	{
+		if (turn == 0 ? whiteKingMoved : blackKingMoved)
+		{
+			return false;
+		}
+		if (turn == 0 ? whiteKRMoved : blackKRMoved)
+		{
+			return false;
+		}
+		int row = turn == 0 ? 7 : 0;
+		if (board[row][5] != nullptr || board[row][6] != nullptr)
+		{
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
 	Square* start = move->getStartSquare();
 	Square* end = move->getEndSquare();
 	if (start->getRow() < 0 || start->getRow() > 7 || start->getColumn() < 0 || start->getColumn() > 7

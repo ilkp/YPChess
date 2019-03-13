@@ -37,9 +37,9 @@ public:
 	void giveRawMoves(std::list<Move*>& moves);
 	void giveLegalMoves(std::list<Move*>& moves);
 	Piece* getPiece(int y, int x);
-	Square findKing(int color);
+	Square findKing(State* obsState, int color);
 	bool squareThreatened(Square square, std::list<Move*>& moves);
-	bool squareThreatened(Square square, int opponent);
+	bool squareThreatened(State* state, Square square, int opponent);
 	int getDoubleStepOnColumn() { return doubleStepOnColumn; }
 	double evaluate();
 	Minimax minimax(int depth);

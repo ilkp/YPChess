@@ -30,14 +30,14 @@ int main()
 			ui->drawBoard(state);
 			do {
 				move = ui->takePlayersMove();
-				if (move->getStartSquare()->getColumn() == -1)
+				if (!move->isLongCastle() && !move->isShortCastle() && move->getStartSquare()->getColumn() == -1)
 				{
 					previousStates.pop_back();
 					state = previousStates.back();
 					break;
 				}
 			} while (!state->moveIsLegal(move));
-			if (move->getStartSquare()->getColumn() != -1)
+			if (move->isLongCastle() || move->isShortCastle() || move->getStartSquare()->getColumn() != -1)
 			{
 				state->playMove(move);
 				state->setTurn((state->getTurn() + 1) % 2);
