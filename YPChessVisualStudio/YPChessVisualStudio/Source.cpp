@@ -16,10 +16,13 @@ int main()
 	State* state = new State();
 	UI* ui = new UI(state, GetStdHandle(STD_OUTPUT_HANDLE));
 	Move* move;
+	int depth;
 	int playerSide;
 
 	cout << "Pelaajan puoli (0 valkoinen, 1 musta): ";
-	cin >> playerSide;
+	wcin >> playerSide;
+	cout << "Valitse tekoalyn tarkastelusyvyys: ";
+	wcin >> depth;
 
 
 	while (true)
@@ -46,7 +49,7 @@ int main()
 		}
 		else {
 			ui->drawBoard(state);
-			Minimax minimax = state->minimax(2);
+			Minimax minimax = state->minimax(depth);
 			state->playMove(&minimax.bestMove);
 			state->setTurn((state->getTurn() + 1) % 2);
 		}
@@ -54,6 +57,6 @@ int main()
 	ui->drawBoard(state);
 	
 	int end;
-	cin >> end;
+	wcin >> end;
 	return 0;
 }
